@@ -18,37 +18,72 @@ function FollowPointer({
 
   return (
     <motion.div
-      className="h-4 w-4 rounded-full z-50"
+      className="pointer-events-none fixed z-50"
       style={{
-        top: y,
+        position: 'fixed',
         left: x,
-        pointerEvents: "none",
+        top: y,
+        transform: 'translate(0, 0)',
+        willChange: 'transform',
+        pointerEvents: 'none',
+        zIndex: 9999,
       }}
-      initial={{ scale: 1, opacity: 1 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0, opacity: 0 }}
+      animate={{
+        x: 0,
+        y: 0,
+        left: x,
+        top: y,
+        transition: { 
+          type: 'spring', 
+          damping: 30, 
+          stiffness: 1000, 
+          mass: 0.5,
+          restDelta: 0.001
+        }
+      }}
+      initial={false}
     >
-      <svg
-        stroke={color}
-        fill={color}
-        strokeWidth="1"
-        viewBox="0 0 16 16"
-        className={`h-6 w-6 text-[${color}] transform -rotate-[70deg] -translate-x-[12px] -translate-y-[10px] stroke-[${color}]`}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M14.082-2.182a.5.5 0 0 1.103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57-10.694.803-8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z"></path>
-      </svg>
-      <motion.div
-       style={{
-        backgroundColor: color,
-      }}
-      initial={{ scale: 0.5, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.5, opacity: 0 }}
-      className="px-2 py-2 bg-neutral-200 text-black font-bold whitespace-nowrap min-w-max text-xs rounded-full"
-      >
-        {info.name || info.email}
-      </motion.div>
+      <div className="relative flex items-center">
+        {/* Pointer cursor */}
+        <div 
+          className="w-3 h-3 border-b-2 border-r-2 border-white"
+          style={{
+            transform: 'rotate(-45deg)',
+            borderColor: color,
+            position: 'relative',
+            left: '4px',
+            top: '2px'
+          }}
+        />
+        
+        {/* Tooltip */}
+        <motion.div
+          className="ml-3 px-2.5 py-1 text-white text-xs font-medium whitespace-nowrap rounded shadow-md"
+          style={{
+            backgroundColor: color,
+            position: 'relative',
+            left: '8px',
+            top: '0px'
+          }}
+          initial={{ 
+            scale: 0.9, 
+            opacity: 0,
+            x: 5
+          }}
+          animate={{ 
+            scale: 1, 
+            opacity: 1,
+            x: 10,
+            transition: { 
+              type: 'spring',
+              stiffness: 500,
+              damping: 30
+            }
+          }}
+        >
+          {info.name || info.email}
+        </motion.div>
+      </div>
     </motion.div>
   );
 }

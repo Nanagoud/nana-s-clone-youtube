@@ -1,42 +1,66 @@
 import { useMyPresence, useOthers } from "@liveblocks/react/suspense"
-import React from "react"
+import React, { useEffect } from "react"
 
 import FollowPointer from "./FollowPointer"
 
 function LiveCursorProviderPage({ children }: { children: React.ReactNode }) {
-    const [myPresence, setMyPresence] = useMyPresence()
+    const [_, setMyPresence] = useMyPresence()
     const others = useOthers()
 
-    const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-        const cursor = {
-            x: Math.floor(event.pageX),
-            y: Math.floor(event.pageY)
-        }
-        setMyPresence({ cursor })
-    }
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            setMyPresence({
+                cursor: {
+                    x: e.clientX,
+                    y: e.clientY
+                }
+            });
+        };
 
-    const handlePointerLeave = () => {
-        setMyPresence({ cursor: null })
-    }
+        const handleMouseLeave = () => {
+            setMyPresence({ cursor: null });
+        };
+
+        // Add a small delay to ensure the cursor is properly positioned
+        const timer = setTimeout(() => {
+            window.addEventListener('mousemove', handleMouseMove, { passive: true });
+            window.addEventListener('mouseleave', handleMouseLeave);
+        }, 100);
+
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseleave', handleMouseLeave);
+        };
+    }, [setMyPresence]);
 
     return (
-        <div
-            onPointerMove={handlePointerMove}
-            onPointerLeave={handlePointerLeave}
-        >
-            {/* Render cursors */}
-            {others.filter((other) => other.presence.cursor).map(({connectionId, presence, info}) => (
-                <FollowPointer 
-                key = {connectionId}
-                info={info}
-                x = {presence.cursor!.x}
-                y = {presence.cursor!.y} >
-
-                </FollowPointer>
-                
-            ))}
-            {children}
-        </div>
+        <>
+            {/* Cursor Layer - Fixed position overlay */}
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                pointerEvents: 'none',
+                zIndex: 9999
+            }}>
+                {others.filter((other) => other.presence.cursor).map(({connectionId, presence, info}) => (
+                    <FollowPointer 
+                        key={connectionId}
+                        info={info}
+                        x={presence.cursor!.x}
+                        y={presence.cursor!.y}
+                    />
+                ))}
+            </div>
+            
+            {/* Content Layer */}
+            <div style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
+                {children}
+            </div>
+        </>
     )
 }
 
