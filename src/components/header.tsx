@@ -2,6 +2,7 @@
 
 import { useUser, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { ThemeToggle } from "./theme-toggle-button";
+import BreadCrumbs from "./breadcrums";
 
 export default function Header() {
     const { user } = useUser();
@@ -9,10 +10,16 @@ export default function Header() {
     return (
         <div className="flex justify-between items-center p-5 border-b shadow-sm">
             {user ? (
-                <h1 className="text-2xl font-bold">{user.firstName}&apos;s space</h1>
+                // header
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                    {user.firstName}&apos;s space
+                </h1>
+
             ) : (
                 "Space"
             )}
+
+            <BreadCrumbs/>
 
             <div className="flex gap-4 items-center">
                 <SignedIn>
@@ -22,9 +29,7 @@ export default function Header() {
                 <SignedOut>
                     <SignInButton>Sign In</SignInButton>
                 </SignedOut>
-
-                {/* 👇 add your theme toggle here */}
-                {/* <ThemeToggle /> */}
+                <ThemeToggle />
             </div>
         </div>
     );
