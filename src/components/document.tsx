@@ -10,6 +10,8 @@ import Editor from "./editor"
 import useOwner from "@/lib/useOwner"
 import DeleteDocument from "./DeleteDocument"
 import InviteUser from "./InviteUser"
+import ManageUsers from "./ManageUsers"
+import Avatars from "./Avatars"
 export default function Document({ id }: { id: string }) {
     const [title, setTitle] = useState<string>('')
     const [isUpdating, startTransition] = useTransition();
@@ -50,6 +52,11 @@ export default function Document({ id }: { id: string }) {
                         </>
                     )}
                 </form>
+            </div>
+            <div className="flex max-w-5xl mx-auto justify-between items-center mb-5">
+                {/* {Manage users} */}
+                <ManageUsers/>
+                <Avatars/>
             </div>
             <Editor />
         </div>
