@@ -5,8 +5,7 @@ import { NextResponse, NextRequest } from "next/server"
 
 export async function POST(req: NextRequest) {
     auth.protect();
-    const { userId, sessionClaims } = await auth()
-    console.log(sessionClaims)
+    const {sessionClaims } = await auth()
 
 
     const { room } = await req.json()
@@ -21,10 +20,6 @@ export async function POST(req: NextRequest) {
         .collectionGroup('rooms')
         .where('userId', '==', sessionClaims!.email)
         .get()
-        console.log('room', room)
-        console.log('usersInRoom', usersInRoom.docs.map(doc => doc.id)
-    
-    )
 
 
     const userInRoom = usersInRoom.docs.find(doc => doc.id === room)
