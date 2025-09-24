@@ -12,6 +12,7 @@ import "@blocknote/core/fonts/inter.css"
 import "@blocknote/shadcn/style.css"
 import { stringToColor } from "@/lib/stringToColor";
 import TranslateDocument from "./TranslateDocument";
+import ChatDocument from "./ChatDocument";
 type EditorProps = {
     doc: Y.Doc;
     provider: LiveblocksYjsProvider;
@@ -67,7 +68,7 @@ export default function Editor() {
                 {/* {TranslateDocument } */}
                 <TranslateDocument doc={doc} />
                 {/* {Chat to document ai} */}
-
+                <ChatDocument doc={doc} />
                 {/* {dark mode} */}
                 <Button onClick={() => setDarkMode(!darkMode)}
                     className={style} >

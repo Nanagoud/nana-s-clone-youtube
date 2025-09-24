@@ -56,13 +56,14 @@ function TranslateDocument({ doc }: { doc: Y.Doc }) {
   const [isopen, setIsOpen] = useState<boolean>(false)
   const [language, setLanguage] = useState<string>('')
   const [summary, setSummary] = useState<string>('')
-  const [question, setQuestion] = useState<string>('')
+  const [question] = useState<string>('')
   const [isPending, startTransition] = useTransition()
   const handleAskQuestion = (e: FormEvent) => {
     e.preventDefault();
     startTransition(async () => {
       const documentData = doc.get('document-store').toJSON();
       const plainText = documentData.replace(/<[^>]+>/g, '').trim();
+      console.log(plainText)
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/translateDocument`, {
         method: 'POST',
         headers: {
