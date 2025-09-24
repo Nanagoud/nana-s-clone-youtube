@@ -2,13 +2,16 @@ import {initializeApp, getApps, getApp, App, cert} from "firebase-admin/app";
 import { getFirestore} from "firebase-admin/firestore";
 
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const sericeKey = require('./service_key.json');
+  const serviceKeyString = Buffer.from(
+    process.env.FIREBASE_SERVICE_KEY as string,
+    "base64"
+  ).toString("utf8");
+  const serviceKey = JSON.parse(serviceKeyString);
 
 let app: App
 if(getApps().length === 0) {
     app = initializeApp({
-        credential: cert(sericeKey)
+        credential: cert(serviceKey)
     }) 
 } else {
     app = getApp()
