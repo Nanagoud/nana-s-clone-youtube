@@ -12,7 +12,7 @@ export default function SideBarOption({id, href}:
     }
 
 ) {
-    const [data, loading, error] = useDocumentData(doc(db, 'documents', id));
+    const [data] = useDocumentData(doc(db, 'documents', id));
     const pathName = usePathname();
     const isActive = href.includes(pathName) && pathName !== '/';
 

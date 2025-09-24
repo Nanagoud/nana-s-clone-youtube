@@ -6,7 +6,6 @@ import BreadCrumbs from "./breadcrums";
 
 export default function Header() {
     const { user } = useUser();
-    console.log(user)
     return (
         <div className="flex justify-between items-center p-5 border-b shadow-sm">
             {user ? (

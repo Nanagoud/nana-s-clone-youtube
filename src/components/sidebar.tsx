@@ -41,14 +41,13 @@ export default function SidebarPage() {
     user?.primaryEmailAddress?.emailAddress ??
     user?.emailAddresses[0]?.emailAddress;
 
-  console.log(email)
   const roomsQuery = user && query(
     collectionGroup(db, 'rooms'),
     where('userId', '==', email)
   )
 
 
-  const [data, loading, error] = useCollection(roomsQuery);
+  const [data] = useCollection(roomsQuery);
 
 
   useEffect(() => {

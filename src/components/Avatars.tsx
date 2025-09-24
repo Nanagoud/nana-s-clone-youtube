@@ -11,7 +11,6 @@ export default function Avatars() {
     const others = useOthers()
     const self = useSelf()
     const all = [...others, self]
-    console.log(all)
     return (
         <div className="flex items-center gap-2">
             <p className="font-light text-sm">Users currently in this document</p>

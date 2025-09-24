@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use server'
 
 import { auth } from '@clerk/nextjs/server';
@@ -56,6 +57,7 @@ export async function deleteDoc(roomId: string) {
         return {
             success: true
         }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         return {
             success: false
